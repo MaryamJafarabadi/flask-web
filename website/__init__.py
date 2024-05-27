@@ -2,17 +2,22 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from os import path
 from flask_login import LoginManager
+
 import os
 
 db = SQLAlchemy()
 DB_NAME = "database.db"
-UPLOAD_FOLDER = '/tmp/uploads'  # Updated to use /tmp directory
+#UPLOAD_FOLDER = 'uploads'
+
+# Ensure the upload folder exists
+#if not os.path.exists(UPLOAD_FOLDER):
+ #   os.makedirs(UPLOAD_FOLDER)
 
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'afjlafknwkw nfmwdaskawf'
-   app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:////tmp/{DB_NAME}'  # Update database path to /tmp
-    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
+    #app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
     db.init_app(app)
     
@@ -26,6 +31,7 @@ def create_app():
     
     create_database(app)
 
+    
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
     login_manager.init_app(app)
@@ -34,14 +40,12 @@ def create_app():
     def load_user(id):
         return User.query.get(int(id))
     
-    # Ensure the upload folder exists
-    if not os.path.exists(UPLOAD_FOLDER):
-        os.makedirs(UPLOAD_FOLDER)
-
     return app
+
+
 
 def create_database(app):
     if not path.exists('website/' + DB_NAME):
         with app.app_context():
             db.create_all()
-        print("Created database!")
+        print("created database!")
