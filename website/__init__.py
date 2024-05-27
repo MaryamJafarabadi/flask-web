@@ -7,17 +7,17 @@ import os
 
 db = SQLAlchemy()
 DB_NAME = "database.db"
-#UPLOAD_FOLDER = 'uploads'
+UPLOAD_FOLDER = 'uploads'
 
 # Ensure the upload folder exists
-#if not os.path.exists(UPLOAD_FOLDER):
- #   os.makedirs(UPLOAD_FOLDER)
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
 
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'afjlafknwkw nfmwdaskawf'
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
-    #app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
     db.init_app(app)
     
@@ -46,6 +46,7 @@ def create_app():
 
 def create_database(app):
     if not path.exists('website/' + DB_NAME):
-        with app.app_context():
-            db.create_all()
+        db.create_all(app = app)
         print("created database!")
+
+    
