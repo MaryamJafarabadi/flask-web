@@ -11,7 +11,7 @@ UPLOAD_FOLDER = '/tmp/uploads'  # Updated to use /tmp directory
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'afjlafknwkw nfmwdaskawf'
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
+   app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:////tmp/{DB_NAME}'  # Update database path to /tmp
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
     db.init_app(app)
